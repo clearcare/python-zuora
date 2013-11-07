@@ -7,10 +7,7 @@ This is a simple client designed to communicate with Zuora via Python Suds.
 
 Dependencies
 ------------
-Right now, the client's primary dependency is on a patched version of
-the Suds library.
-
-Hopefully that will change soon.
+Suds 0.4
 
 Usage
 -----
