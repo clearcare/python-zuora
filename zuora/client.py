@@ -107,7 +107,7 @@ class Zuora:
 
         # Force No Cache
         self.client.set_options(cache=None)
-        
+
         # Create the rest client
         self.rest_client = RestClient(zuora_settings)
 
@@ -129,11 +129,11 @@ class Zuora:
                     response = fn(*args, **kwargs)
                 except Exception as error:
                     log.error("Zuora: Unexpected Error. %s" % error)
-                    raise ZuoraException("Zuora: Unexpected Error. %s"\
+                    raise ZuoraException("Zuora: Unexpected Error. %s"
                                          % error)
             else:
                 log.error("WebFault. Invalid Session. %s" % err.__dict__)
-                raise ZuoraException("WebFault. Invalid Session. %s"\
+                raise ZuoraException("WebFault. Invalid Session. %s"
                                     % err.__dict__)
         except Exception as error:
             log.error("Zuora: Unexpected Error. %s" % error)
@@ -363,7 +363,7 @@ class Zuora:
         """
         if not effective_date:
             response = self.rest_client.subscription.cancel_subscription(
-                                                             subscription_key)
+                                                            subscription_key)
         else:
             response = self.rest_client.subscription.cancel_subscription(
                     subscription_key,
@@ -387,7 +387,7 @@ class Zuora:
             zContact = self.make_contact(user=user,
                                          billing_address=billing_address,
                                          zAccount=zAccount)
-        
+
         # Add the shipping contact if it exists
         if shipping_address:
             zShippingContact = self.make_contact(user=user,
@@ -440,7 +440,7 @@ class Zuora:
             zAccount = response.records[0]
             return zAccount
         else:
-            raise DoesNotExist("Unable to find Account for User ID %s"\
+            raise DoesNotExist("Unable to find Account for User ID %s"
                             % user_id)
 
     def get_contact(self, email=None, account_id=None):
@@ -464,14 +464,14 @@ class Zuora:
                 UpdatedById, UpdatedDate, WorkEmail, WorkPhone
             FROM Contact
             WHERE %s
-            """  % " AND ".join(qs_filter)
+            """ % " AND ".join(qs_filter)
 
         response = self.query(qs)
         if getattr(response, "records") and len(response.records) > 0:
             zContact = response.records[0]
             return zContact
         else:
-            raise DoesNotExist("Unable to find Contact for Email %s"\
+            raise DoesNotExist("Unable to find Contact for Email %s"
                             % email)
 
     def get_invoice(self, invoice_id=None):
@@ -497,7 +497,7 @@ class Zuora:
             zInvoice = response.records[0]
             return zInvoice
         else:
-            raise DoesNotExist("Unable to find Invoice for Id %s"\
+            raise DoesNotExist("Unable to find Invoice for Id %s"
                             % invoice_id)
 
     def get_invoice_pdf(self, invoice_id=None):
@@ -519,7 +519,7 @@ class Zuora:
             zInvoice = response.records[0]
             return zInvoice.Body
         else:
-            raise DoesNotExist("Unable to find Invoice for Id %s"\
+            raise DoesNotExist("Unable to find Invoice for Id %s"
                             % invoice_id)
 
     def get_invoices(self, account_id=None):
@@ -638,7 +638,7 @@ class Zuora:
             zInvoicePayment = response.records[0]
             return zInvoicePayment
         else:
-            raise DoesNotExist("Unable to find InvoicePayment for Id %s"\
+            raise DoesNotExist("Unable to find InvoicePayment for Id %s"
                             % invoice_payment_id)
 
     def get_invoice_payments(self, invoice_id=None, payment_id=None):
@@ -700,7 +700,7 @@ class Zuora:
             zPayment = response.records[0]
             return zPayment
         else:
-            raise DoesNotExist("Unable to find Payment for Id %s"\
+            raise DoesNotExist("Unable to find Payment for Id %s"
                             % payment_id)
 
     def get_payments(self, account_id=None):
@@ -768,7 +768,7 @@ class Zuora:
             zPaymentMethod = response.records[0]
             return zPaymentMethod
         else:
-            raise DoesNotExist("Unable to find Payment Method for %s. %s"\
+            raise DoesNotExist("Unable to find Payment Method for %s. %s"
                             % (payment_method_id, response))
 
     def get_payment_methods(self, account_id=None, account_number=None,
@@ -872,7 +872,7 @@ class Zuora:
             zProducts = response.records
             return zProducts
         except:
-            raise DoesNotExist("Unable to find Product for %s"\
+            raise DoesNotExist("Unable to find Product for %s"
                             % product_id)
 
     def get_rate_plan_charges(self, rate_plan_id=None,
@@ -916,7 +916,7 @@ class Zuora:
         else:
             qs_filter = None
             if rate_plan_id_list:
-                id_filter_list = [where_id_string % rp_id \
+                id_filter_list = [where_id_string % rp_id
                           for rp_id in rate_plan_id_list]
                 # Combine the rate plan ids for the WHERE clause
                 qs_filter = " OR ".join(id_filter_list)
@@ -927,7 +927,7 @@ class Zuora:
             return response.records
         except:
             raise DoesNotExist(
-                            "Unable to find Rate Plan Charges for %s"\
+                            "Unable to find Rate Plan Charges for %s"
                             % rate_plan_id)
 
     def get_product_rate_plans(self, product_rate_plan_id=None,
@@ -957,7 +957,7 @@ class Zuora:
         else:
             qs_filter = None
             if product_id_list:
-                id_filter_list = ["ProductId = '%s'" % pid \
+                id_filter_list = ["ProductId = '%s'" % pid
                           for pid in product_id_list]
                 # Combine the product rate plan ids for the WHERE clause
                 qs_filter = " OR ".join(id_filter_list)
@@ -983,7 +983,7 @@ class Zuora:
             zProductRatePlans = response.records
             return zProductRatePlans
         except:
-            raise DoesNotExist("Unable to find Product Rate Plan for %s"\
+            raise DoesNotExist("Unable to find Product Rate Plan for %s"
                             % product_rate_plan_id)
 
     def get_product_rate_plan_charges(self, product_rate_plan_id=None,
@@ -1023,7 +1023,7 @@ class Zuora:
         else:
             qs_filter = None
             if product_rate_plan_id_list:
-                id_filter_list = [where_id_string % prp_id \
+                id_filter_list = [where_id_string % prp_id
                           for prp_id in product_rate_plan_id_list]
                 # Combine the product rate plan ids for the WHERE clause
                 qs_filter = " OR ".join(id_filter_list)
@@ -1035,7 +1035,7 @@ class Zuora:
             return response.records
         except:
             raise DoesNotExist(
-                            "Unable to find Product Rate Plan Charges for %s"\
+                            "Unable to find Product Rate Plan Charges for %s"
                             % product_rate_plan_id)
 
     def get_product_rate_plan_charge_tiers(
@@ -1064,7 +1064,7 @@ class Zuora:
         else:
             qs_filter = None
             if product_rate_plan_charge_id_list:
-                id_filter_list = [where_id_string % prpc_id \
+                id_filter_list = [where_id_string % prpc_id
                           for prpc_id in product_rate_plan_charge_id_list]
                 # Combine the product rate plan charge ids
                 # for the WHERE clause
@@ -1078,7 +1078,7 @@ class Zuora:
             return zProductRatePlanChargeTiers
         except:
             raise DoesNotExist(
-                    "Unable to find Product Rate Plan Charges Tiers for %s"\
+                    "Unable to find Product Rate Plan Charges Tiers for %s"
                     % product_rate_plan_charge_id)
 
     def get_camel_converted_products(self, product_id=None, shortcodes=None):
@@ -1152,7 +1152,7 @@ class Zuora:
             product_rate_plan_charge_dict[rpc.ProductRatePlanId][rpc.Id] = {}
             for attr in rpc:
                 key = convert_camel(attr[0].replace("__c", ""))
-                product_rate_plan_charge_dict[\
+                product_rate_plan_charge_dict[
                             rpc.ProductRatePlanId][rpc.Id][key] = str(attr[1])
         return product_rate_plan_charge_dict
 
@@ -1165,7 +1165,7 @@ class Zuora:
         """
         # Get Product and optionally filter by ShortCode
         response = self.get_product_rate_plan_charge_tiers(
-                                            product_rate_plan_charge_id_list=\
+                                            product_rate_plan_charge_id_list=
                                             product_rate_plan_charge_id_list)
 
         product_rate_plan_charge_tier_dict = {}
@@ -1175,11 +1175,11 @@ class Zuora:
                 product_rate_plan_charge_tier_dict.get(
                                 rpct.ProductRatePlanChargeId, {})
 
-            product_rate_plan_charge_tier_dict[\
+            product_rate_plan_charge_tier_dict[
                                 rpct.ProductRatePlanChargeId][rpct.Id] = {}
             for attr in rpct:
                 key = convert_camel(attr[0].replace("__c", ""))
-                product_rate_plan_charge_tier_dict[\
+                product_rate_plan_charge_tier_dict[
                     rpct.ProductRatePlanChargeId][rpct.Id][key] = str(attr[1])
         return product_rate_plan_charge_tier_dict
 
@@ -1308,7 +1308,7 @@ class Zuora:
 
         product_rate_plan_charges_tier_dict = \
                     self.get_camel_converted_product_rate_plan_charge_tiers(
-                                    product_rate_plan_charge_id_list=\
+                                    product_rate_plan_charge_id_list=
                                     product_rate_plan_charge_dict.keys())
 
         # Create the list of rate plan charge tiers
@@ -1334,7 +1334,7 @@ class Zuora:
             price = pricing_dict[charge_model][charge_type]
             for rpct in rpc["rate_charge_tiers"]:
                 is_overage_price = rpct["is_overage_price"]
-                if is_overage_price == False:
+                if not is_overage_price:
                     price = price + float(rpct["price"])
 
             pricing_dict[charge_model][charge_type] = price
@@ -1449,7 +1449,7 @@ class Zuora:
         return zRecords
 
     def make_account(self, user=None, currency='USD', status="Draft",
-		     lazy=False, site_name=None, billing_address=None):
+            lazy=False, site_name=None, billing_address=None):
         """
         The customer's account. Zuora uses the Account object to track all
         subscriptions, usage, and transactions for a single account to be
@@ -1741,7 +1741,7 @@ class Zuora:
             zContact = self.make_contact(user=user,
                                          billing_address=billing_address,
                                          zAccount=zAccount)
-        
+
         # Add the shipping contact if it exists
         if not zShippingContact and shipping_address:
             zShippingContact = self.make_contact(user=user,
@@ -1767,7 +1767,7 @@ class Zuora:
                                     .create("ns0:SubscribeOptions")
         zSubscriptionOptions.GenerateInvoice = generate_invoice_flag
         zSubscriptionOptions.ProcessPayments = process_payments_flag
-        
+
         # Attach SubscribeInvoiceProcessingOptions
         SubscribeInvoiceProcessingOptions = self.client.factory\
                             .create("ns0:SubscribeInvoiceProcessingOptions")
@@ -1777,14 +1777,14 @@ class Zuora:
                                                                 "Subscription"
         zSubscriptionOptions.SubscribeInvoiceProcessingOptions = \
                                             SubscribeInvoiceProcessingOptions
-        
+
         log.info("***external_payment_method: %s" % external_payment_method)
         if external_payment_method:
             product_rate_plan_charges = self.get_product_rate_plan_charges(
                                     product_rate_plan_id=product_rate_plan_id)
             product_rate_plan_charge_tiers = \
                 self.get_product_rate_plan_charge_tiers(
-                product_rate_plan_charge_id=product_rate_plan_charges[0].Id)
+                    product_rate_plan_charge_id=product_rate_plan_charges[0].Id)
             zExternalPaymentOptions = self.client.factory\
                                     .create("ns0:ExternalPaymentOptions")
             zExternalPaymentOptions.PaymentMethodId = \
@@ -1799,7 +1799,7 @@ class Zuora:
         # Subscription Data
         zSubscriptionData = self.client.factory.create('ns0:SubscriptionData')
         zSubscriptionData.Subscription = zSubscription
-        
+
         # Apply the discount rate plan if it exists
         if zDiscountRatePlanData:
             zSubscriptionData.RatePlanData = [zRatePlanData, zDiscountRatePlanData]
