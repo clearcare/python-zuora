@@ -155,8 +155,16 @@ class Zuora:
 
         # Call Create
         fn = self.client.service.create
+
+        call_options = self.client.factory.create('CallOptions')
+        call_options.useSingleTransaction = True
+
+        self.client.set_options(soapheaders=[call_options])
+
         log.info("***Zuora Create Request: %s" % z_object)
         response = self.call(fn, z_object)
+        log.debug(self.client.last_sent())
+        log.debug(self.client.last_received())
         log.info("***Zuora Create Response: %s" % response)
         # return the response
         return response
@@ -203,9 +211,13 @@ class Zuora:
         # Create a session_header element to enclose the session element
         SessionHeader = Element('SessionHeader', ns=session_namespace)
 
+        CallOptions = Element('CallOptions', ns=session_namespace)
+        call_options = Element('useSingleTransaction', ns=session_namespace).setText('True')
+        CallOptions.append(call_options)
+
         # Append the session element inside the session_header element
         SessionHeader.append(session)
-        self.client.set_options(soapheaders=[SessionHeader])
+        self.client.set_options(soapheaders=[SessionHeader, CallOptions])
 
     def query(self, query_string):
         """
