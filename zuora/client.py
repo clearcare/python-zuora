@@ -141,6 +141,27 @@ class Zuora:
 
         return response
 
+    def amend(self, z_object):
+        """
+        Use create() to create one or more objects of a specific type.
+        You can specify different types in different create() calls, but
+        each create() call must apply to only one type of object.
+
+        :param z_object z_object: object to create
+
+        :returns: the API response
+        """
+        # Call Create
+        fn = self.client.service.amend
+
+        log.info("***Zuora Create Request: %s" % z_object)
+        response = self.call(fn, z_object)
+        log.debug(self.client.last_sent())
+        log.debug(self.client.last_received())
+        log.info("***Zuora Create Response: %s" % response)
+        # return the response
+        return response
+
     # Client Create
     def create(self, z_object):
         """

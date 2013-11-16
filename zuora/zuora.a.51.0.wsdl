@@ -640,13 +640,13 @@
 							<element minOccurs="0" name="AmendmentId" nillable="true" type="zns:ID" />
 							<element minOccurs="0" name="AmendmentSubscriptionRatePlanId" nillable="true" type="zns:ID" />
 							<element minOccurs="0" name="AmendmentType" nillable="true" type="string" />
-              <element minOccurs="0" name="CreatedById" nillable="true" type="zns:ID"  />
-              <element minOccurs="0" name="CreatedDate" nillable="true" type="dateTime"  />
+                            <element minOccurs="0" name="CreatedById" nillable="true" type="zns:ID"  />
+                            <element minOccurs="0" name="CreatedDate" nillable="true" type="dateTime"  />
 							<element minOccurs="0" name="Name" nillable="true" type="string" /><!-- do we need this? -->
 							<element minOccurs="0" name="ProductRatePlanId" nillable="true" type="zns:ID" />
 							<element minOccurs="0" name="SubscriptionId" nillable="true" type="zns:ID" />
-              <element minOccurs="0" name="UpdatedById" nillable="true" type="zns:ID"  />
-              <element minOccurs="0" name="UpdatedDate" nillable="true" type="dateTime"  />
+                            <element minOccurs="0" name="UpdatedById" nillable="true" type="zns:ID"  />
+                            <element minOccurs="0" name="UpdatedDate" nillable="true" type="dateTime"  />
 						</sequence>
 					</extension>
 				</complexContent>
@@ -665,8 +665,8 @@
 							<element minOccurs="0" name="ChargeModel" nillable="true" type="string" />
 							<element minOccurs="0" name="ChargeNumber" nillable="true" type="string" />
 							<element minOccurs="0" name="ChargeType" nillable="true" type="string" />
-			        <element minOccurs="0" name="CreatedById" nillable="true" type="zns:ID"  />
-			        <element minOccurs="0" name="CreatedDate" nillable="true" type="dateTime"  />
+			                <element minOccurs="0" name="CreatedById" nillable="true" type="zns:ID"  />
+			                <element minOccurs="0" name="CreatedDate" nillable="true" type="dateTime"  />
 							<element minOccurs="0" name="Description" nillable="true" type="string" />
 							<element minOccurs="0" name="DiscountAmount" nillable="true" type="decimal" />
 							<element minOccurs="0" name="DiscountLevel" nillable="true" type="string" />
@@ -738,8 +738,8 @@
 							<element minOccurs="0" name="CancelledDate" nillable="true" type="dateTime" />
 							<element minOccurs="0" name="ContractAcceptanceDate" nillable="true" type="dateTime" />
 							<element minOccurs="0" name="ContractEffectiveDate" nillable="true" type="dateTime" />
-			        <element minOccurs="0" name="CreatedById" nillable="true" type="zns:ID"  />
-			        <element minOccurs="0" name="CreatedDate" nillable="true" type="dateTime"  />
+			                <element minOccurs="0" name="CreatedById" nillable="true" type="zns:ID"  />
+			                <element minOccurs="0" name="CreatedDate" nillable="true" type="dateTime"  />
 							<element minOccurs="0" name="CreatorAccountId" nillable="true" type="zns:ID" />
 							<element minOccurs="0" name="CreatorInvoiceOwnerId" nillable="true" type="zns:ID" />
 							<element minOccurs="0" name="InitialTerm" nillable="true" type="int" />
@@ -747,7 +747,7 @@
 							<element minOccurs="0" name="IsInvoiceSeparate" nillable="true" type="boolean" />
 							<element minOccurs="0" name="Name" nillable="true" type="string" />
 							<element minOccurs="0" name="Notes" nillable="true" type="string" />
-              <element minOccurs="0" name="OriginalCreatedDate" nillable="true" type="dateTime"  />
+                            <element minOccurs="0" name="OriginalCreatedDate" nillable="true" type="dateTime"  />
 							<element minOccurs="0" name="OriginalId" nillable="true" type="zns:ID"  />
 							<element minOccurs="0" name="PreviousSubscriptionId" nillable="true" type="zns:ID"  />
 							<element minOccurs="0" name="RenewalTerm" nillable="true" type="int" />
@@ -758,8 +758,8 @@
 							<element minOccurs="0" name="TermEndDate" nillable="true" type="dateTime" />
 							<element minOccurs="0" name="TermStartDate" nillable="true" type="dateTime" />
 							<element minOccurs="0" name="TermType" nillable="true" type="string" />
-			        <element minOccurs="0" name="UpdatedById" nillable="true" type="zns:ID"  />
-			        <element minOccurs="0" name="UpdatedDate" nillable="true" type="dateTime"  />
+			                <element minOccurs="0" name="UpdatedById" nillable="true" type="zns:ID"  />
+			                <element minOccurs="0" name="UpdatedDate" nillable="true" type="dateTime"  />
 							<element minOccurs="0" name="Version" nillable="true" type="int" />
 						</sequence>
 					</extension>
