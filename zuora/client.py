@@ -349,7 +349,8 @@ class Zuora:
     def update_product_amendment2(self, name, description, quantity,
             contract_effective_datetime, effective_datetime,
             service_activation_datetime, customer_acceptance_datetime,
-            subscription_id, rate_plan_id, product_rate_plan_charge_id):
+            subscription_id, rate_plan_id, product_rate_plan_charge_id,
+            process_payments=False):
 
         rate_plan_charge = self.client.factory.create('ns2:RatePlanCharge')
         rate_plan_charge.ProductRatePlanChargeId = product_rate_plan_charge_id
@@ -381,7 +382,11 @@ class Zuora:
         amendment.Type = 'UpdateProduct'
         amendment.RatePlanData = rate_plan_data
 
+        amend_options = self.client.factory.create('ns0:AmendOptions')
+        amend_options.ProcessPayments = process_payments
+
         amend_request.Amendments = [amendment]
+        amend_request.AmendOptions = amend_options
         return self.amend(amend_request)
 
     def add_product_amendment(self, name, subscription_id,
