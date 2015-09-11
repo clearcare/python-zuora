@@ -1,41 +1,49 @@
-#!/usr/bin/python -tt
+from setuptools import (
+        find_packages,
+        setup,
+)
+from setuptools.command.test import test as TestCommand
 
-setupArgs = {
-    'name': 'zuora',
-    'version': '1.0.0.8',
-    'author': 'MapMyFitness',
-    'author_email': 'brandon.fredericks@mapmyfitness.com',
-    'url': 'http://github.com/mapmyfitness/python-zuora',
-    'description': 'Zuora client library.',
-    'packages': ['zuora'],
-}
+import sys
+import subprocess
 
-try:
-    from setuptools import setup, Command
-except ImportError:
-    from distutils.core import setup
-else:
-    import sys
-    import subprocess
 
-    class TestRunner(Command):
-        user_options = []
 
-        def initialize_options(self):
-            pass
+class PyTest(TestCommand):
+    user_options = [('pytest-args=', 'a', "Arguments to pass to py.test")]
 
-        def finalize_options(self):
-            pass
+    def initialize_options(self):
+        TestCommand.initialize_options(self)
+        self.pytest_args = []
 
-        def run(self):
-            errno = subprocess.call(['py.test'])
-            sys.exit(errno)
+    def finalize_options(self):
+        TestCommand.finalize_options(self)
+        self.test_args = []
+        self.test_suite = True
 
-    setupArgs.update({
-        'tests_require': ['pytest'],
-        'cmdclass': {'test': TestRunner},
-        #'install_requires': ['suds >= 0.4', 'python-requests'], Worrying about getting dependency chain right later
-        'zip_safe': False,
-    })
+    def run_tests(self):
+        #import here, cause outside the eggs aren't loaded
+        import pytest
+        errno = pytest.main(self.pytest_args)
+        sys.exit(errno)
 
-setup(**setupArgs)
+
+setup(
+    name='zuora',
+    version='1.0.0.9',
+    author='MapMyFitness',
+    author_email='brandon.fredericks@mapmyfitness.com',
+    url='http://github.com/clearcare/python-zuora',
+    description='Zuora client library.',
+    tests_require=['pytest', 'mock'],
+    cmdclass={'test': PyTest},
+    packages=find_packages(),
+    package_data = {
+            '': ['*.wsdl'],
+    },
+    install_requires=[
+        'suds==0.4',
+        'requests',
+    ],
+    zip_safe=False,
+)
