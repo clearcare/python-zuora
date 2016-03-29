@@ -19,11 +19,18 @@
 from datetime import datetime, date
 from os import path
 import re
+import ssl
 
 from suds import WebFault
 from suds.client import Client
 from suds.sax.element import Element
+from suds.transport import Reply
+from suds.transport.http import HttpAuthenticated
 from suds.xsd.doctor import Import, ImportDoctor
+
+import requests
+from requests.adapters import HTTPAdapter
+from requests.packages.urllib3.poolmanager import PoolManager
 
 import logging
 log = logging.getLogger(__name__)
@@ -36,6 +43,12 @@ SOAP_TIMESTAMP = '%Y-%m-%dT%H:%M:%S-06:00'
 
 
 from rest_client import RestClient
+
+# Get best/highest secure protocol
+try:
+    SSL_VERSION = ssl.PROTOCOL_TLSv1_2
+except AttributeError:
+    SSL_VERSION = ssl.PROTOCOL_SSLv23
 
 
 class ZuoraException(Exception):
@@ -53,6 +66,34 @@ class MissingRequired(ZuoraException):
     Exception for when a required parameter is missing
     """
     pass
+
+
+class TLSHttpAdapter(HTTPAdapter):
+    """
+    A transport adapter for requests that uses best available secure connection protocol
+    """
+    def init_poolmanager(self, connections, maxsize, block=False):
+        self.poolmanager = PoolManager(num_pools=connections,
+                                       maxsize=maxsize,
+                                       block=block,
+                                       ssl_version=SSL_VERSION)
+
+
+class RequestsTransport(HttpAuthenticated):
+    """
+    A transport adapter for suds that uses the requests library.
+    """
+    def __init__(self, **kwargs):
+        # super won't work because not using new style class
+        HttpAuthenticated.__init__(self, **kwargs)
+        self.session = requests.Session()
+        self.session.mount('https://', TLSHttpAdapter())
+
+    def send(self, request):
+        self.addcredentials(request)
+        resp = self.session.post(request.url, data=request.message, headers=request.headers)
+        result = Reply(resp.status_code, resp.headers, resp.content)
+        return result
 
 
 # main class
@@ -103,7 +144,8 @@ class Zuora:
                                     self.base_dir + "/" + self.wsdl_file)
 
         self.client = Client(url=wsdl_file, doctor=schema_doctor,
-                             cache=None)
+                             cache=None,
+                             transport=RequestsTransport())
 
         # Force No Cache
         self.client.set_options(cache=None)
@@ -119,22 +161,9 @@ class Zuora:
 
         :returns: the client response
         """
-
         try:
+            self.login()
             response = fn(*args, **kwargs)
-        except WebFault as err:
-            if err.fault.faultcode == "fns:INVALID_SESSION":
-                self.login()
-                try:
-                    response = fn(*args, **kwargs)
-                except Exception as error:
-                    log.error("Zuora: Unexpected Error. %s" % error)
-                    raise ZuoraException("Zuora: Unexpected Error. %s"
-                                         % error)
-            else:
-                log.error("WebFault. Invalid Session. %s" % err.__dict__)
-                raise ZuoraException("WebFault. Invalid Session. %s"
-                                    % err.__dict__)
         except Exception as error:
             log.error("Zuora: Unexpected Error. %s" % error)
             raise ZuoraException("Zuora: Unexpected Error. %s" % error)
@@ -217,6 +246,9 @@ class Zuora:
         TODO: investigate methodology to persist session_id across sessions
         - look at custom capabilities -- sqlalchemy caching - WEB-935 perhaps
         """
+        if self.session_id:
+            return
+
         login_response = self.client.service.login(username=self.username,
                                                    password=self.password)
         self.session_id = login_response.Session

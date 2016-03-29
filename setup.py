@@ -30,7 +30,7 @@ class PyTest(TestCommand):
 
 setup(
     name='zuora',
-    version='1.0.0.9',
+    version='1.0.0.10',
     author='MapMyFitness',
     author_email='brandon.fredericks@mapmyfitness.com',
     url='http://github.com/clearcare/python-zuora',
